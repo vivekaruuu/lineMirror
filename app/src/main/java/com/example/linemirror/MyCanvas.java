@@ -5,16 +5,20 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 
 public class MyCanvas extends View {
-
+    private static final String TAG = "MyCanvas";
         Paint mPaint;
         Path mPath;
+
 
         public MyCanvas(Context context) {
             super(context);
@@ -45,17 +49,26 @@ public class MyCanvas extends View {
             mPaint.setAntiAlias(true);
             mPaint.setStyle(Paint.Style.STROKE);
 
+
         }
         public void draw(Path path) {
             mPath=path;
             invalidate();
         }
 
+
         @Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
-            canvas.drawPath(mPath, mPaint);
-            canvas.drawLine(0,getHeight(),getWidth(),getHeight(),mPaint);
+             {
+
+                canvas.drawPath(mPath, mPaint);
+                canvas.drawLine(0, getHeight(), getWidth(), getHeight(), mPaint);
+
+             }
         }
 
+
 }
+
+

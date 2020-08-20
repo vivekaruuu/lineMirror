@@ -28,8 +28,8 @@ public class Fragment2 extends Fragment {
         touchListener(myCanvas2);
         return view;
     }
-    public void updateEditText(Path path) {
-        myCanvas2.draw(path);
+    public void updateEditText(Path path,int color) {
+        myCanvas2.draw(path);myCanvas2.mPaint.setColor(color);
     }
 
     private void touchListener(View view) {

@@ -56,26 +56,6 @@ public class MyCanvas2 extends View {
         mPath=path;
         invalidate();
     }
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        float x = event.getX();
-//        float y = event.getY();
-//
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN: {
-//                mPath.moveTo(x,y);
-//                return true;
-//            }
-//            case MotionEvent.ACTION_MOVE:{
-//                mPath.lineTo(x,y);
-//                break;
-//            }
-//
-//
-//        }
-//        invalidate();
-//        return true;
-//    }
 
 
 }

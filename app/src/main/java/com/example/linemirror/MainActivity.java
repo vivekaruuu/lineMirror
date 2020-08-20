@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity implements Fragment1.Fragmen
     }
 
     @Override
-    public void onInputASent(Path path) {
-        fragment2.updateEditText(path);
+    public void onInputASent(Path path,int color) {
+        fragment2.updateEditText(path,color);
     }
 
     @Override

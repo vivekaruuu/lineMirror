@@ -46,6 +46,10 @@ public class MyCanvas extends View {
             mPaint.setStyle(Paint.Style.STROKE);
 
         }
+        public void draw(Path path) {
+            mPath=path;
+            invalidate();
+        }
 
         @Override
         protected void onDraw(Canvas canvas) {

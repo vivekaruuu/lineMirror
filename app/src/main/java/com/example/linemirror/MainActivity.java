@@ -7,7 +7,7 @@ import android.icu.util.ValueIterator;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity implements Fragment1.FragmentAListener {
+public class MainActivity extends AppCompatActivity implements Fragment1.FragmentAListener,Fragment2.FragmentBListener {
 
     Fragment1 fragment1;
     Fragment2 fragment2;
@@ -28,7 +28,10 @@ public class MainActivity extends AppCompatActivity implements Fragment1.Fragmen
     public void onInputASent(Path path) {
         fragment2.updateEditText(path);
     }
-    public void onClick(View view){
 
+    @Override
+    public void onInputBSent(Path path) {
+        fragment1.updateEditText(path);
     }
+
 }

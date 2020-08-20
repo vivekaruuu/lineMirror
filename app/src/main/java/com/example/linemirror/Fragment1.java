@@ -48,6 +48,9 @@ public class Fragment1 extends Fragment {
 
         return view;
     }
+    public void updateEditText(Path path) {
+        myCanvas.draw(path);
+    }
     
     private void touchListener(View view) {
         view.setOnTouchListener(new View.OnTouchListener() {

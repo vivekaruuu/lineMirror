@@ -40,6 +40,7 @@ public class Fragment1 extends Fragment {
     Button colorButton;
     Button eraseButton;
     int mColor=Color.BLACK;
+    int mTempColor;
     int erase=0;
     @Nullable
     @Override
@@ -54,9 +55,14 @@ public class Fragment1 extends Fragment {
              public void onClick(View view) {
                  if(erase==0){
                      erase=1;
+                     mTempColor=mColor;
+                     mColor=Color.WHITE;
+                     listener.onInputASent(allStrokes,mColor);
+
                  }
                  else {
                      erase=0;
+                     mColor=mTempColor;
                  }
              }
          });
@@ -70,6 +76,7 @@ public class Fragment1 extends Fragment {
              @Override
              public void onClick(View view) {
                 allStrokes.clear();
+                erase=0;
                  myCanvas.invalidate();
                  listener.onInputASent(allStrokes,mColor);
              }
@@ -88,6 +95,9 @@ public class Fragment1 extends Fragment {
 
             @Override
             public void onOk(AmbilWarnaDialog dialog, int color) {
+                    if(color==Color.BLACK&&mColor==Color.BLACK){
+                        return;
+                    }
                     mColor=color;
                     myCanvas.mPaint.setColor(mColor);
                     colorButton.setBackgroundColor(mColor);
@@ -112,19 +122,19 @@ public class Fragment1 extends Fragment {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
                         allStrokes.add(new stroke(mColor));
+                        if(erase==1) {
+                            allStrokes.get(allStrokes.size() - 1).paint.setStrokeWidth(45);
+                        }
                         allStrokes.get(allStrokes.size() - 1).path.moveTo(x,y);
-                          return true;
+
+
+                        return true;
                     }
                     case MotionEvent.ACTION_MOVE:{
-                        if(erase==0) {
 
                             allStrokes.get(allStrokes.size() - 1).path.lineTo(x,y);
                             listener.onInputASent(allStrokes,mColor);
-                        }else {
-                            myCanvas.getXY(x,y);
-                            myCanvas.invalidate();
-                        }
-                        break;
+                            break;
                     }
 
 

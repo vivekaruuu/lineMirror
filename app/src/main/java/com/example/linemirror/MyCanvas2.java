@@ -11,6 +11,8 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import static com.example.linemirror.Fragment2.allStrokes;
+
 public class MyCanvas2 extends View {
 
     Paint mPaint;
@@ -48,14 +50,13 @@ public class MyCanvas2 extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawPath(mPath,mPaint);
+        for (stroke s : allStrokes) {
+            canvas.drawPath(s.path, s.paint);
+        }
     }
 
 
-    public void draw(Path path) {
-        mPath=path;
-        invalidate();
-    }
+
 
 
 }

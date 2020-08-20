@@ -13,14 +13,17 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class MyCanvas extends View {
     private static final String TAG = "MyCanvas";
         Paint mPaint;
-        Path mPath;
+        static List<stroke> allStrokes = new ArrayList<stroke>();
 
 
-        public MyCanvas(Context context) {
+    public MyCanvas(Context context) {
             super(context);
 
             init(null);
@@ -42,18 +45,13 @@ public class MyCanvas extends View {
         }
 
         public void init(@Nullable AttributeSet set) {
-            mPaint = new Paint();
-            mPath = new Path();
+            mPaint =new Paint();
             mPaint.setColor(Color.BLACK);
             mPaint.setStrokeWidth(5);
             mPaint.setAntiAlias(true);
             mPaint.setStyle(Paint.Style.STROKE);
 
-
-        }
-        public void draw(Path path) {
-            mPath=path;
-            invalidate();
+            allStrokes.add(new stroke(Color.BLACK));
         }
 
 
@@ -61,10 +59,10 @@ public class MyCanvas extends View {
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
              {
-
-                canvas.drawPath(mPath, mPaint);
                 canvas.drawLine(0, getHeight(), getWidth(), getHeight(), mPaint);
-
+                 for (stroke s : allStrokes) {
+                     canvas.drawPath(s.path, s.paint);
+                 }
              }
         }
 

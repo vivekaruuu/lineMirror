@@ -2,6 +2,7 @@ package com.example.linemirror;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Path;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,11 +15,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.example.linemirror.MyCanvas.allStrokes;
+
 public class Fragment2 extends Fragment {
     private static final String TAG = "Fragment2";
     private Fragment2.FragmentBListener listener;
+    static List<stroke> allStrokes = new ArrayList<stroke>();
+    int mColor;
     public interface FragmentBListener {
-        void onInputBSent(Path path);
+        void onInputBSent(List<stroke> allStrokes);
     }
 
     MyCanvas2 myCanvas2;
@@ -28,8 +36,10 @@ public class Fragment2 extends Fragment {
         touchListener(myCanvas2);
         return view;
     }
-    public void updateEditText(Path path,int color) {
-        myCanvas2.draw(path);myCanvas2.mPaint.setColor(color);
+    public void updateEditText( List<stroke> allStrokes,int color) {
+       this.allStrokes=allStrokes;
+       mColor=color;
+       myCanvas2.invalidate();
     }
 
     private void touchListener(View view) {
@@ -41,13 +51,16 @@ public class Fragment2 extends Fragment {
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                        myCanvas2.mPath.moveTo(x,y);
+                        allStrokes.add(new stroke(mColor));
+                        if(mColor== Color.WHITE){
+                            allStrokes.get(allStrokes.size() - 1).paint.setStrokeWidth(45);
+                        }
+                        allStrokes.get(allStrokes.size() - 1).path.moveTo(x,y);
                         return true;
                     }
                     case MotionEvent.ACTION_MOVE:{
-                        myCanvas2.mPath.lineTo(x,y);
-                        listener.onInputBSent(myCanvas2.mPath);
-                        break;
+                        allStrokes.get(allStrokes.size() - 1).path.lineTo(x,y);
+                        listener.onInputBSent(allStrokes);
                     }
 
 

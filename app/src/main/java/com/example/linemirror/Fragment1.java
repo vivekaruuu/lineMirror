@@ -21,7 +21,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.util.List;
+
 import yuku.ambilwarna.AmbilWarnaDialog;
+
+import static com.example.linemirror.MyCanvas.allStrokes;
 
 
 public class Fragment1 extends Fragment {
@@ -29,13 +33,14 @@ public class Fragment1 extends Fragment {
     private static final String TAG = "Fragment1";
     private FragmentAListener listener;
     public interface FragmentAListener {
-        void onInputASent(Path path,int color);
+        void onInputASent(List<stroke> allStrokes,int color);
     }
     MyCanvas myCanvas;
     Button button;
     Button colorButton;
     Button eraseButton;
     int mColor=Color.BLACK;
+    int erase=0;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,6 +52,12 @@ public class Fragment1 extends Fragment {
          eraseButton.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
+                 if(erase==0){
+                     erase=1;
+                 }
+                 else {
+                     erase=0;
+                 }
              }
          });
          colorButton.setOnClickListener(new View.OnClickListener() {
@@ -58,9 +69,9 @@ public class Fragment1 extends Fragment {
          button.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 myCanvas.mPath.reset();
+                allStrokes.clear();
                  myCanvas.invalidate();
-                 listener.onInputASent(myCanvas.mPath,mColor);
+                 listener.onInputASent(allStrokes,mColor);
              }
          });
 
@@ -79,16 +90,16 @@ public class Fragment1 extends Fragment {
             public void onOk(AmbilWarnaDialog dialog, int color) {
                     mColor=color;
                     myCanvas.mPaint.setColor(mColor);
-                    myCanvas.invalidate();
-                    listener.onInputASent(myCanvas.mPath,mColor);
                     colorButton.setBackgroundColor(mColor);
+                    listener.onInputASent(allStrokes,mColor);
             }
         });
         colorPicker.show();
     }
 
-    public void updateEditText(Path path) {
-        myCanvas.draw(path);
+    public void updateEditText(List<stroke> allStrokes) {
+        MyCanvas.allStrokes=allStrokes;
+        myCanvas.invalidate();
     }
     
     private void touchListener(View view) {
@@ -100,12 +111,19 @@ public class Fragment1 extends Fragment {
 
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN: {
-                            myCanvas.mPath.moveTo(x, y);
+                        allStrokes.add(new stroke(mColor));
+                        allStrokes.get(allStrokes.size() - 1).path.moveTo(x,y);
                           return true;
                     }
                     case MotionEvent.ACTION_MOVE:{
-                        myCanvas.mPath.lineTo(x,y);
-                        listener.onInputASent(myCanvas.mPath,mColor);
+                        if(erase==0) {
+
+                            allStrokes.get(allStrokes.size() - 1).path.lineTo(x,y);
+                            listener.onInputASent(allStrokes,mColor);
+                        }else {
+                            myCanvas.getXY(x,y);
+                            myCanvas.invalidate();
+                        }
                         break;
                     }
 
